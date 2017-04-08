@@ -1,0 +1,48 @@
+version: '3'
+services:
+  phpfpm:
+    image: alpine-php
+    networks:
+      - main
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - wordpress-files:/var/www/wordpress
+
+  web:
+    image: alpine-nginx
+    networks:
+      - main
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - wordpress-files:/var/www/wordpress
+    ports:
+      - "80:80"
+
+  db:
+    image: alpine-mysql
+    networks:
+      - main
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - database:/var/lib/mysql
+networks:
+  main:
+
+volumes:
+  wordpress-files:
+  database:
