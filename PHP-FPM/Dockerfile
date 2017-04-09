@@ -1,27 +1,20 @@
 FROM armhf/alpine:latest
 
 RUN apk --update add php5 \
-	php5-fpm \
-	php5-cli \
-	php5-json \
-	php5-curl \
-	php5-gd \
-	php5-imagick \
-	php5-pgsql \
-	php5-mysql \
-	php5-imap \
-	php5-xsl \
-	php5-ldap \
-	php5-memcache \
-	php5-mcrypt \
-	zlib
-RUN apk add bash
+	php7-fpm \
+	php7-json \
+	php7-mysqli \
+	php7-zlib \
+	php7-curl \
+	php7-openssl \
+	bash
 
-COPY ./app.zip /app.zip
+COPY ./app.zip ./php-fpm.conf ./www.conf /
 
 RUN mkdir -p /var/www/ && \
 	unzip /app.zip -d /var/www && \
-	rm /app.zip 
+	rm /app.zip && \
+	mv /php-fpm.conf /etc/php7/php-fpm.conf && \
+	mv /www.conf /etc/php7/php-fpm.d/www.conf
 
-COPY ./php-fpm.conf /etc/php5/php-fpm.conf
-ENTRYPOINT ["php-fpm", "--allow-to-run-as-root"]
+ENTRYPOINT ["php-fpm7", "--allow-to-run-as-root"]

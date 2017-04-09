@@ -1,7 +1,7 @@
 version: '3'
 services:
   phpfpm:
-    image: alpine-php
+    image: rpi-phpapps
     networks:
       - main
     deploy:
@@ -14,7 +14,7 @@ services:
       - wordpress-files:/var/www/wordpress
 
   web:
-    image: alpine-nginx
+    image: rpi-nginx
     networks:
       - main
     deploy:
@@ -29,7 +29,7 @@ services:
       - "80:80"
 
   db:
-    image: alpine-mysql
+    image: rpi-mysql
     networks:
       - main
     deploy:
